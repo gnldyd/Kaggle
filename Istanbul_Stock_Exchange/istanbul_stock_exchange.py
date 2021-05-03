@@ -16,10 +16,10 @@ def get_r2score(y, y_pred):
 
 
 def normal_equation(x, y):
-    x_bias = x.copy()
-    x_bias.insert(0, 'bias', [1] * len(x))
-    theta = np.linalg.inv(x_bias.T.dot(x_bias)).dot(x_bias.T).dot(y)
-    predict = x_bias.dot(theta)
+    x_0 = x.copy()
+    x_0.insert(0, 'intercept', [1] * len(x))
+    theta = np.linalg.inv(x_0.T.dot(x_0)).dot(x_0.T).dot(y)
+    predict = x_0.dot(theta)
     score = get_r2score(y, predict)
     return theta, score
 
@@ -33,8 +33,10 @@ def run(args):
             y = data[[column]]
             theta1, score1 = linear_regression(x, y)
             theta2, score2 = normal_equation(x, y)
-
-            # To do : will data visualization
+            print("Predict :", column)
+            print("sklearn R2 score =", score1)
+            print("My R2 score =", score2)
+            print()
 
 
 if __name__ == '__main__':
